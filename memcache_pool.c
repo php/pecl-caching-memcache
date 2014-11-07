@@ -1275,6 +1275,14 @@ int mmc_pool_schedule_get(
 	}
 
 	if (mmc->buildreq == NULL) {
+		/**
+		 * The server does not have a buildreq in process yet. Add this server
+		 * to the pool's pending queue, so its buildreq will be processed in
+		 * mmc_pool_run(). Then create a buildreq and initialize it with
+		 * begin_get(). The current key will be added with append_get() below,
+		 * and the buildreq will be finalized with end_get() in mmc_pool_run()
+		 * before delivery.
+		 */
 		mmc_queue_push(&(pool->pending), mmc);
 
 		mmc->buildreq = mmc_pool_request_get(
@@ -1663,13 +1671,20 @@ void mmc_pool_run(mmc_pool_t *pool TSRMLS_DC)  /*
 	runs all scheduled requests to completion {{{ */
 {
 	mmc_t *mmc;
-	while ((mmc = mmc_queue_pop(&(pool->pending))) != NULL) {
-		pool->protocol->end_get(mmc->buildreq);
-		mmc_pool_schedule(pool, mmc, mmc->buildreq TSRMLS_CC);
-		mmc->buildreq = NULL;
-	}
+	while (pool->reading->len || pool->sending->len || pool->pending.len) {
+		/**
+		 * Each Server on the pool's pending queue have a buildreq in process,
+		 * created while processing a request previously on the reading or
+		 * sending queue (e.g. due to a failover). Finalize the buildreq and
+		 * add it to the sending and reading queue via mmc_pool_schedule(), so
+		 * that mmc_pool_select() will process it.
+		 */
+		while ((mmc = mmc_queue_pop(&(pool->pending))) != NULL) {
+			pool->protocol->end_get(mmc->buildreq);
+			mmc_pool_schedule(pool, mmc, mmc->buildreq TSRMLS_CC);
+			mmc->buildreq = NULL;
+		}
 
-	while (pool->reading->len || pool->sending->len) {
 		mmc_pool_select(pool TSRMLS_CC);
 	}
 }
