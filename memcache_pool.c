@@ -1673,7 +1673,7 @@ void mmc_pool_run(mmc_pool_t *pool TSRMLS_DC)  /*
 	mmc_t *mmc;
 	while (pool->reading->len || pool->sending->len || pool->pending.len) {
 		/**
-		 * Each Server on the pool's pending queue have a buildreq in process,
+		 * Each server on the pool's pending queue has a buildreq in process,
 		 * created while processing a request previously on the reading or
 		 * sending queue (e.g. due to a failover). Finalize the buildreq and
 		 * add it to the sending and reading queue via mmc_pool_schedule(), so
