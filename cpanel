@@ -11,4 +11,5 @@ echo "extension=memcache.so" >> /opt/cpanel/ea-php70/root/etc/php.d/memcache.ini
 service httpd restart
 cd ..
 rm -fr memcache
+rm -fr NON_BLOCKING_IO_php7.zip
 cd ~/
