@@ -1,7 +1,7 @@
 cd /opt
 wget https://github.com/websupport-sk/pecl-memcache/archive/NON_BLOCKING_IO_php7.zip
 unzip NON_BLOCKING_IO_php7.zip
-mv NON_BLOCKING_IO_php7 memcache
+mv pecl-memcache-NON_BLOCKING_IO_php7 memcache
 cd memcache
 /opt/cpanel/ea-php70/root/usr/bin/phpize
 ./configure --with-php-config=/opt/cpanel/ea-php70/root/usr/bin/php-config
