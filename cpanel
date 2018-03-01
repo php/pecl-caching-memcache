@@ -3,11 +3,11 @@ wget https://github.com/websupport-sk/pecl-memcache/archive/NON_BLOCKING_IO_php7
 unzip NON_BLOCKING_IO_php7.zip
 mv pecl-memcache-NON_BLOCKING_IO_php7 memcache
 cd memcache
-/opt/cpanel/ea-php70/root/usr/bin/phpize
-./configure --with-php-config=/opt/cpanel/ea-php70/root/usr/bin/php-config
+/opt/cpanel/ea-php71root/usr/bin/phpize
+./configure --with-php-config=/opt/cpanel/ea-php71root/usr/bin/php-config
 make
 make install
-echo "extension=memcache.so" >> /opt/cpanel/ea-php70/root/etc/php.d/memcache.ini
+echo "extension=memcache.so" >> /opt/cpanel/ea-php71/root/etc/php.d/memcache.ini
 service httpd restart
 cd ..
 rm -fr memcache
