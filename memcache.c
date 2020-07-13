@@ -37,7 +37,7 @@
 #include "ext/standard/info.h"
 #include "ext/standard/php_string.h"
 #include "ext/standard/php_var.h"
-#include "ext/standard/php_smart_str.h"
+#include "Zend/zend_smart_str.h"
 #include "php_network.h"
 #include "php_memcache.h"
 #include "memcache_queue.h"
