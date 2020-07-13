@@ -1093,7 +1093,7 @@ void mmc_server_deactivate(mmc_t *mmc TSRMLS_DC) /* 	disconnect and marks the se
 		}
 		ZVAL_LONG(errnum, mmc->errnum);
 
-		call_user_function_ex(EG(function_table), NULL, mmc->failure_callback, &retval, 5, params, 0, NULL TSRMLS_CC);
+		call_user_function(EG(function_table), NULL, mmc->failure_callback, &retval, 5, params);
 
 		zval_ptr_dtor(&host);
 		zval_ptr_dtor(&tcp_port); zval_ptr_dtor(&udp_port);
